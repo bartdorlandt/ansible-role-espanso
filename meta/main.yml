@@ -1,0 +1,18 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: bartdorlandt
+  role_name: espanso
+  description: espanso installation and setup
+  license: license (BSD, MIT)
+  min_ansible_version: "2.2"
+  platforms:
+    - name: MacOSX
+      versions:
+        - all
+  galaxy_tags:
+    - development
+    - system
+    - configuration
+    - shell

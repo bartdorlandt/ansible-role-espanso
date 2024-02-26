@@ -1,0 +1,29 @@
+---
+- name: install espanso
+  ansible.builtin.homebrew_cask:
+    name: espanso
+    state: present
+
+- name: Set fact icloud path
+  set_fact:
+    icloud: "{{ ansible_env.HOME }}/Library/Mobile Documents/com~apple~CloudDocs"
+    icloud_path: "{{ ansible_env.HOME }}/Library/Mobile Documents/com~apple~CloudDocs/{{ path_inside_icloud }}"
+    espanso_path: "{{ ansible_env.HOME }}/Library/Application Support/espanso"
+  
+- name: Does icloud path exists?
+  ansible.builtin.stat:
+    path: "{{ icloud }}"
+  register: icloud_dir
+
+- name: Does espanso icloud path exists?
+  ansible.builtin.stat:
+    path: "{{ icloud_path }}"
+  register: bin_dir
+
+- name: Path not found, copy structure
+  ansible.builtin.include_tasks: copy_structure.yml
+  when: icloud_dir.stat.exists and not bin_dir.stat.exists
+
+- name: Path exists, creating symlink
+  ansible.builtin.include_tasks: move_and_symlink.yml
+  when: icloud_dir.stat.exists
