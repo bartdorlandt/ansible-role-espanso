@@ -1,0 +1,18 @@
+---
+- name: Verify the config path
+  ansible.builtin.stat:
+    path: "{{ espanso_path }}/config"
+  register: espanso_config_dir
+
+- name: Verify the match path
+  ansible.builtin.stat:
+    path: "{{ espanso_path }}/match"
+  register: espanso_match_dir
+
+- name: Rename directories to .old
+  command: 'mv "{{ espanso_path }}/config" "{{ espanso_path }}/config.old"'
+  when: espanso_config_dir.stat.isdir is defined and espanso_config_dir.stat.isdir
+
+- name: Rename directories to .old
+  command: 'mv "{{ espanso_path }}/match" "{{ espanso_path }}/match.old"'
+  when:  espanso_match_dir.stat.isdir is defined and espanso_match_dir.stat.isdir

@@ -1,10 +1,4 @@
 ---
-- name: Ensure icloud path exists
-  ansible.builtin.file:
-    path: "{{ icloud_path }}"
-    state: directory
-    mode: 0750
-
 - name: Copy structure to iCloud location
   ansible.builtin.copy:
     src: "{{ espanso_path }}/{{ item }}"
