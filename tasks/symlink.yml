@@ -1,16 +1,13 @@
 ---
+# Make the cloud directory
 - name: Ensure icloud path exists
   ansible.builtin.file:
-    path: "{{ espanso_path }}"
+    path: "{{ icloud_path }}"
     state: directory
-    mode: 0755
+    mode: 0750
 
 - name: Create a symbolic link to icloud
   ansible.builtin.file:
-    src: "{{ icloud_path }}/{{ item }}"
-    dest: "{{ espanso_path }}/{{ item }}"
+    src: "{{ icloud_path }}"
+    dest: "{{ espanso_path }}"
     state: link
-    force: true
-  with_items:
-    - config
-    - match

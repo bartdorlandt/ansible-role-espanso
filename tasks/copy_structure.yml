@@ -1,8 +1,0 @@
----
-- name: Copy structure to iCloud location
-  ansible.builtin.copy:
-    src: "{{ espanso_path }}/{{ item }}"
-    dest: "{{ icloud_path }}/"
-  with_items:
-    - config
-    - match
