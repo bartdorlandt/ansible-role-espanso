@@ -4,7 +4,7 @@
   ansible.builtin.file:
     path: "{{ icloud_path }}"
     state: directory
-    mode: 0750
+    mode: "0750"
 
 - name: Create a symbolic link to icloud
   ansible.builtin.file:

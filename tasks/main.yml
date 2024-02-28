@@ -1,15 +1,15 @@
 ---
-- name: install espanso
-  ansible.builtin.homebrew_cask:
+- name: Install espanso
+  community.general.packaging.os.homebrew_cask:
     name: espanso
     state: present
 
 - name: Set fact icloud path
-  set_fact:
+  ansible.builtin.set_fact:
     icloud: "{{ ansible_env.HOME }}/Library/Mobile Documents/com~apple~CloudDocs"
     icloud_path: "{{ ansible_env.HOME }}/Library/Mobile Documents/com~apple~CloudDocs/{{ path_inside_icloud }}"
     espanso_path: "{{ ansible_env.HOME }}/Library/Application Support/espanso"
-  
+
 - name: Does icloud path exists?
   ansible.builtin.stat:
     path: "{{ icloud }}"
@@ -25,21 +25,24 @@
     path: "{{ espanso_path }}"
   register: espanso_dir
 
-# Copy the existing espanso configuration to the cloud 
+# Copy the existing espanso configuration to the cloud
 - name: Copy existing structure to icloud
   ansible.builtin.copy:
     src: "{{ espanso_path }}/"
     dest: "{{ icloud_path }}/"
-  when: > 
-    icloud_dir.stat.isdir is defined and icloud_dir.stat.isdir and 
-    (icloud_path_dir.stat.isdir is not defined or not icloud_path_dir.stat.isdir) and 
+    mode: "0700"
+  when: >
+    icloud_dir.stat.isdir is defined and icloud_dir.stat.isdir and
+    (icloud_path_dir.stat.isdir is not defined or not icloud_path_dir.stat.isdir) and
     espanso_dir.stat.isdir is defined and espanso_dir.stat.isdir
 
-# Both local and icloud environment exist. Move the existing configuration to .old.
+# Both local and icloud environment exist. Rename to .old.
 - name: Move existing configuration
-  command: 'mv "{{ espanso_path }}" "{{ espanso_path }}.old"'
+  ansible.builtin.command: mv "{{ espanso_path }}" "{{ espanso_path }}.old"
+  register: my_output # <- Registers the command output.
+  changed_when: my_output.rc != 0 # <- Uses the return code to define when the task has changed.
   when: >
-    icloud_dir.stat.isdir is defined and icloud_dir.stat.isdir and 
+    icloud_dir.stat.isdir is defined and icloud_dir.stat.isdir and
     espanso_dir.stat.isdir is defined and espanso_dir.stat.isdir
 
 # Create a symbolic link to icloud
