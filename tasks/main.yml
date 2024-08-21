@@ -1,6 +1,6 @@
 ---
 - name: Install espanso
-  community.general.packaging.os.homebrew_cask:
+  community.general.homebrew_cask:
     name: espanso
     state: present
 
