@@ -39,8 +39,8 @@
 # Both local and icloud environment exist. Rename to .old.
 - name: Move existing configuration
   ansible.builtin.command: mv "{{ espanso_path }}" "{{ espanso_path }}.old"
-  register: my_output # <- Registers the command output.
-  changed_when: my_output.rc != 0 # <- Uses the return code to define when the task has changed.
+  register: my_output  # <- Registers the command output.
+  changed_when: my_output.rc != 0  # <- Uses the return code to define when the task has changed.
   when: >
     icloud_dir.stat.isdir is defined and icloud_dir.stat.isdir and
     espanso_dir.stat.isdir is defined and espanso_dir.stat.isdir
