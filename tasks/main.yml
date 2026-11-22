@@ -6,9 +6,9 @@
 
 - name: Set fact icloud path
   ansible.builtin.set_fact:
-    icloud: "{{ ansible_env.HOME }}/Library/Mobile Documents/com~apple~CloudDocs"
-    icloud_path: "{{ ansible_env.HOME }}/Library/Mobile Documents/com~apple~CloudDocs/{{ path_inside_icloud }}"
-    espanso_path: "{{ ansible_env.HOME }}/Library/Application Support/espanso"
+    icloud: "{{ ansible_facts.env.HOME }}/Library/Mobile Documents/com~apple~CloudDocs"
+    icloud_path: "{{ ansible_facts.env.HOME }}/Library/Mobile Documents/com~apple~CloudDocs/{{ path_inside_icloud }}"
+    espanso_path: "{{ ansible_facts.env.HOME }}/Library/Application Support/espanso"
 
 - name: Does icloud path exists?
   ansible.builtin.stat:
